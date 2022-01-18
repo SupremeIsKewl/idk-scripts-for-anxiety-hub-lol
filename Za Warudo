@@ -1,0 +1,3 @@
+_G.AmountOfTime = 4 -- Second --  -- Press T Button To Active
+_G.ChatZaWarudo = true  -- this is says Za Warudo to chat true/false ur change
+loadstring(game:HttpGet("https://pastebin.com/raw/ykAwTY3U", true))()
