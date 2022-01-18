@@ -1,0 +1,1181 @@
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "Melon's (FE) Scripts";
+	Text = "Loading, enjoy!";
+	Icon = "rbxthumb://type=Asset&id=7969699183&w=150&h=150"})
+Duration = 16;
+wait(0)
+HumanDied = false
+local CountSCIFIMOVIELOL = 1
+function SCIFIMOVIELOL(Part0,Part1,Position,Angle)
+	local AlignPos = Instance.new('AlignPosition', Part1); AlignPos.Name = "AliP_"..CountSCIFIMOVIELOL
+	AlignPos.ApplyAtCenterOfMass = true;
+	AlignPos.MaxForce = 5772000--67752;
+	AlignPos.MaxVelocity = math.huge/9e110;
+	AlignPos.ReactionForceEnabled = false;
+	AlignPos.Responsiveness = 200;
+	AlignPos.RigidityEnabled = false;
+	local AlignOri = Instance.new('AlignOrientation', Part1); AlignOri.Name = "AliO_"..CountSCIFIMOVIELOL
+	AlignOri.MaxAngularVelocity = math.huge/9e110;
+	AlignOri.MaxTorque = 5772000
+	AlignOri.PrimaryAxisOnly = false;
+	AlignOri.ReactionTorqueEnabled = false;
+	AlignOri.Responsiveness = 200;
+	AlignOri.RigidityEnabled = false;
+	local AttachmentA=Instance.new('Attachment',Part1); AttachmentA.Name = "Ath_"..CountSCIFIMOVIELOL
+	local AttachmentB=Instance.new('Attachment',Part0); AttachmentB.Name = "Ath_"..CountSCIFIMOVIELOL
+	AttachmentA.Orientation = Angle or Vector3.new(0,0,0)
+	AttachmentA.Position = Position or Vector3.new(0,0,0)
+	AlignPos.Attachment1 = AttachmentA;
+	AlignPos.Attachment0 = AttachmentB;
+	AlignOri.Attachment1 = AttachmentA;
+	AlignOri.Attachment0 = AttachmentB;
+	CountSCIFIMOVIELOL = CountSCIFIMOVIELOL + 1
+	return {AlignPos,AlignOri,AttachmentA,AttachmentB}
+end
+
+if _G.netted ~= true then
+	_G.netted = true
+	coroutine.wrap(function()
+		settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
+		settings().Physics.AllowSleep = false
+		game:GetService("RunService").RenderStepped:Connect(function()
+			game:FindFirstChildOfClass("Players").LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)
+			sethiddenproperty(game:FindFirstChildOfClass("Players").LocalPlayer,"SimulationRadius",math.huge*math.huge)
+		end)
+	end)()
+end
+
+game:FindFirstChildOfClass("Players").LocalPlayer["Character"].Archivable = true
+local hatnameclone = {}
+for _,v in next, game:FindFirstChildOfClass("Players").LocalPlayer["Character"]:GetChildren() do
+	if v:IsA("Accessory") then
+		if hatnameclone[v.Name] then
+			if hatnameclone[v.Name] == "s" then
+				hatnameclone[v.Name] = {}
+			end
+			table.insert(hatnameclone[v.Name],v)
+		else
+			hatnameclone[v.Name] = "s"
+		end
+	end
+end
+for _,v in pairs(hatnameclone) do
+	if type(v) == "table" then
+		local num = 1
+		for _,w in pairs(v) do
+			w.Name = w.Name..num
+			num = num + 1
+		end
+	end
+end
+hatnameclone = nil
+
+local DeadChar = game:FindFirstChildOfClass("Players").LocalPlayer.Character
+
+local fldr = Instance.new("Folder",game:FindFirstChildOfClass("Players").LocalPlayer["Character"])
+fldr.Name = "DMYF"
+local CloneChar = DeadChar:Clone()
+local ANIMATIONHERE
+if CloneChar:FindFirstChild("Animate") then
+	ANIMATIONHERE = CloneChar:FindFirstChild("Animate"):Clone()
+	CloneChar:FindFirstChild("Animate"):Destroy()
+end
+if CloneChar:FindFirstChildOfClass("Folder") then CloneChar:FindFirstChildOfClass("Folder"):Destroy() end
+if CloneChar.Torso:FindFirstChild("Neck") then
+	local Clonessss = CloneChar.Torso:FindFirstChild("Neck"):Clone()
+	Clonessss.Part0 = nil
+	Clonessss.Part1 = DeadChar.Head
+	Clonessss.Parent = DeadChar.Torso
+end
+CloneChar.Parent = fldr
+CloneChar.HumanoidRootPart.CFrame = DeadChar.HumanoidRootPart.CFrame
+CloneChar.Humanoid.BreakJointsOnDeath = false
+CloneChar.Name = "non"
+CloneChar.Humanoid.DisplayDistanceType = "None"
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		local topacc = false
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+		v.Handle.Massless = true
+		v.Handle.CanCollide = false
+		if v.Handle:FindFirstChildOfClass("Attachment") then
+			local ath__ = v.Handle:FindFirstChildOfClass("Attachment")
+			if ath__.Name == "HatAttachment" or ath__.Name == "HairAttachment" or ath__.Name == "FaceFrontAttachment" or ath__.Name == "FaceCenterAttachment" then
+				topacc = ath__.Name
+			end
+		end
+        local bv = Instance.new("BodyVelocity",v.Handle)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			if topacc then
+				local allthings = SCIFIMOVIELOL(v.Handle,DeadChar.Torso,Vector3.new(0,1.5,0)+ (DeadChar.Head[topacc].Position + (v.Handle[topacc].Position*-1)),Vector3.new(0,0,0))
+				local normaltop = allthings[1].Attachment1
+				local alipos = allthings[1]
+				local alirot = allthings[2]
+				local p0 = v.Handle
+				local p1 = DeadChar.Head
+				alipos.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				alirot.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				while true do
+					game:GetService("RunService").RenderStepped:wait()
+					if HumanDied then break end
+					coroutine.wrap(function()
+						if alipos.Attachment1 == normaltop then
+							p0.CFrame = p0.CFrame:lerp((((DeadChar.Torso.CFrame * CFrame.new(0,1.5,0)) * p1[topacc].CFrame) * p0[topacc].CFrame:inverse()),1)
+						else
+							v.Handle.CFrame = v.Handle.CFrame:lerp(alipos.Attachment1.Parent.CFrame * CFrame.new(alipos.Attachment1.Position) * CFrame.Angles(math.rad(alipos.Attachment1.Rotation.X),math.rad(alipos.Attachment1.Rotation.Y),math.rad(alipos.Attachment1.Rotation.Z)),1)
+						end
+					end)()
+				end
+			else
+				SCIFIMOVIELOL(v.Handle,CloneChar[v.Name].Handle,Vector3.new(0,0,0),Vector3.new(0,0,0))
+			end
+		end)()
+    end
+end
+
+local a = DeadChar.Torso
+local b = DeadChar.HumanoidRootPart
+local c = DeadChar.Humanoid
+a.Parent = game:FindFirstChildOfClass("Workspace")
+c.Parent = game:FindFirstChildOfClass("Workspace")
+local told = a:Clone()
+local told1 = c:Clone()
+b["RootJoint"].Part0 = told
+b["RootJoint"].Part1 = DeadChar.Head
+a.Name = "torso"
+a.Neck:Destroy()
+c.Name = "Mizt Hub Best"
+told.Parent = DeadChar
+told1.Parent = DeadChar
+DeadChar.PrimaryPart = told
+told1.Health = 0
+b:Destroy()
+a.Parent = DeadChar
+c.Parent = DeadChar
+told:Destroy()
+told1:Destroy()
+a.Name = "Torso"
+
+if CloneChar.Head:FindFirstChildOfClass("Decal") then CloneChar.Head:FindFirstChildOfClass("Decal").Transparency = 1 end
+if DeadChar:FindFirstChild("Animate") then DeadChar:FindFirstChild("Animate"):Destroy() end
+
+local Collider
+function UnCollide()
+    if HumanDied then Collider:Disconnect(); return end
+    --[[for _,Parts in next, CloneChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+            Parts.CanCollide = false 
+        end 
+    end]]
+    for _,Parts in next, DeadChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+        Parts.CanCollide = false
+        end 
+    end 
+end
+Collider = game:GetService("RunService").Stepped:Connect(UnCollide)
+
+local resetBindable = Instance.new("BindableEvent")
+resetBindable.Event:connect(function()
+    game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+	resetBindable:Destroy()
+	HumanDied = true
+    pcall(function()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+		DeadChar.Head:Destroy()
+		DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+		if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+	end)
+end)
+game:GetService("StarterGui"):SetCore("ResetButtonCallback", resetBindable)
+
+coroutine.wrap(function()
+    while true do
+        game:GetService("RunService").RenderStepped:wait()
+        if not CloneChar or not CloneChar:FindFirstChild("Head") or not CloneChar:FindFirstChildOfClass("Humanoid") or CloneChar:FindFirstChildOfClass("Humanoid").Health <= 0 and not DeadChar or not DeadChar:FindFirstChild("Head") or not DeadChar:FindFirstChildOfClass("Humanoid") or DeadChar:FindFirstChildOfClass("Humanoid").Health <= 0 then 
+            HumanDied = true
+            pcall(function()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+				DeadChar.Head:Destroy()
+				DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+				if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+			end)
+            if resetBindable then
+                game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+                resetBindable:Destroy()
+            end
+            break
+        end		
+    end
+end)()
+
+
+SCIFIMOVIELOL(DeadChar["Head"],CloneChar["Head"])
+SCIFIMOVIELOL(DeadChar["Torso"],CloneChar["Torso"])
+SCIFIMOVIELOL(DeadChar["Left Arm"],CloneChar["Left Arm"])
+SCIFIMOVIELOL(DeadChar["Right Arm"],CloneChar["Right Arm"])
+SCIFIMOVIELOL(DeadChar["Left Leg"],CloneChar["Left Leg"])
+SCIFIMOVIELOL(DeadChar["Right Leg"],CloneChar["Right Leg"])
+
+for _,v in pairs(DeadChar:GetChildren()) do
+	if v:IsA("BasePart") and v.Name ~= "Head" then
+		--[[local bv = Instance.new("BodyVelocity",v)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = CloneChar[v.Name].CFrame
+			end
+		end)()]]
+	elseif v:IsA("BasePart") and v.Name == "Head" then
+		local bv = Instance.new("BodyVelocity",v)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = DeadChar.Torso.CFrame * CFrame.new(0,1.5,0)
+			end
+		end)()
+	end
+end
+
+for _,BodyParts in next, CloneChar:GetDescendants() do
+if BodyParts:IsA("BasePart") or BodyParts:IsA("Part") then
+BodyParts.Transparency = 1 end end
+game:GetService("RunService").RenderStepped:wait()
+game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+game:FindFirstChildOfClass("Workspace"):FindFirstChildOfClass("Camera").CameraSubject = CloneChar.Humanoid
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+	end
+end
+
+if ANIMATIONHERE then ANIMATIONHERE.Parent = CloneChar end
+
+wait(0)
+
+wait(2)
+Player = game.Players.LocalPlayer
+c = game.Players.LocalPlayer.Character
+anim = c.Humanoid.Animator
+c.Humanoid.Name = "Cyborg"
+anim.Parent = nil
+attack = false
+vt = Vector3.new
+bc = BrickColor.new
+br = BrickColor.random
+it = Instance.new
+cf = CFrame.new
+euler = CFrame.fromEulerAnglesXYZ
+angles = CFrame.Angles
+matr = math.random
+mouse = Player:GetMouse()
+local runDummyScript = function(f,scri)
+local oldenv = getfenv(f)
+local newenv = setmetatable({}, {
+__index = function(_, k)
+if k:lower() == 'script' then
+return scri
+else
+return oldenv[k]
+end
+end
+})
+setfenv(f, newenv)
+ypcall(function() f() end)
+end
+cors = {}
+mas = Instance.new("Model",game:GetService("Lighting")) 
+mas.Name = "CyborgArm"
+o1 = Instance.new("Model")
+o2 = Instance.new("Part")
+o3 = Instance.new("BlockMesh")
+o4 = Instance.new("Part")
+o5 = Instance.new("CylinderMesh")
+o6 = Instance.new("Part")
+o7 = Instance.new("CylinderMesh")
+o8 = Instance.new("Part")
+o9 = Instance.new("CylinderMesh")
+o10 = Instance.new("Part")
+o11 = Instance.new("Part")
+o12 = Instance.new("Weld")
+o13 = Instance.new("Weld")
+o14 = Instance.new("Weld")
+o15 = Instance.new("Weld")
+o16 = Instance.new("Weld")
+o17 = Instance.new("Weld")
+o18 = Instance.new("Weld")
+o19 = Instance.new("Weld")
+o20 = Instance.new("Weld")
+o21 = Instance.new("Weld")
+o22 = Instance.new("Weld")
+o23 = Instance.new("Part")
+o24 = Instance.new("BlockMesh")
+o25 = Instance.new("Part")
+o26 = Instance.new("BlockMesh")
+o27 = Instance.new("Part")
+o28 = Instance.new("BlockMesh")
+o29 = Instance.new("Part")
+o30 = Instance.new("BlockMesh")
+o31 = Instance.new("Part")
+o32 = Instance.new("BlockMesh")
+o33 = Instance.new("Part")
+o34 = Instance.new("BlockMesh")
+o1.Parent = mas
+o2.Parent = o1
+o2.Material = Enum.Material.SmoothPlastic
+o2.BrickColor = BrickColor.new("Dark taupe")
+o2.CanCollide = false
+o2.Position = Vector3.new(229.5, 42.8999939, 141.205963)
+o2.Size = Vector3.new(1.01999998, 1.51999998, 0.200000003)
+o2.CFrame = CFrame.new(229.5, 42.8999939, 141.205963, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+o2.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o2.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o2.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o2.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o2.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o2.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o2.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o2.Position = Vector3.new(229.5, 42.8999939, 141.205963)
+o2.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o3.Parent = o2
+o3.Scale = Vector3.new(1, 1, 0.200000003)
+o3.Scale = Vector3.new(1, 1, 0.200000003)
+o4.Name = "Energy"
+o4.Parent = o1
+o4.Material = Enum.Material.Neon
+o4.BrickColor = BrickColor.new("Maroon")
+o4.CanCollide = false
+o4.Position = Vector3.new(229.517883, 41.7399902, 141.505966)
+o4.Rotation = Vector3.new(180, 90, 0)
+o4.Size = Vector3.new(0.399999976, 0.25, 0.399999976)
+o4.CFrame = CFrame.new(229.517883, 41.7399902, 141.505966, 0, 0, 1, 0, -1, 0, 1, 0, 0)
+o4.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o4.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o4.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o4.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o4.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o4.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o4.Color = Color3.new(0.458824, 0, 0)
+o4.Position = Vector3.new(229.517883, 41.7399902, 141.505966)
+o4.Orientation = Vector3.new(0, 90, 180)
+o4.Color = Color3.new(0.458824, 0, 0)
+o5.Parent = o4
+o6.Name = "Energy"
+o6.Parent = o1
+o6.Material = Enum.Material.Neon
+o6.BrickColor = BrickColor.new("Maroon")
+o6.CanCollide = false
+o6.Position = Vector3.new(229.917908, 42.9899902, 141.505966)
+o6.Rotation = Vector3.new(-90, 0, -90)
+o6.Size = Vector3.new(0.399999976, 0.25, 0.399999976)
+o6.CFrame = CFrame.new(229.917908, 42.9899902, 141.505966, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+o6.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o6.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o6.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o6.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o6.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o6.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o6.Color = Color3.new(0.458824, 0, 0)
+o6.Position = Vector3.new(229.917908, 42.9899902, 141.505966)
+o6.Orientation = Vector3.new(-90, -90, 0)
+o6.Color = Color3.new(0.458824, 0, 0)
+o7.Parent = o6
+o8.Parent = o1
+o8.Material = Enum.Material.SmoothPlastic
+o8.Position = Vector3.new(229.918121, 42.9899902, 141.505966)
+o8.Rotation = Vector3.new(-90, 0, -90)
+o8.Size = Vector3.new(0.5, 0.200000003, 0.5)
+o8.CFrame = CFrame.new(229.918121, 42.9899902, 141.505966, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+o8.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o8.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o8.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o8.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o8.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o8.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o8.Position = Vector3.new(229.918121, 42.9899902, 141.505966)
+o8.Orientation = Vector3.new(-90, -90, 0)
+o9.Parent = o8
+o10.Parent = o1
+o10.Material = Enum.Material.SmoothPlastic
+o10.BrickColor = BrickColor.new("Dark stone grey")
+o10.CanCollide = false
+o10.Position = Vector3.new(229.5, 42.6499977, 141.5)
+o10.Size = Vector3.new(1.00999999, 2.00999999, 1.00999999)
+o10.CFrame = CFrame.new(229.5, 42.6499977, 141.5, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+o10.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o10.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o10.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o10.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o10.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o10.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o10.Color = Color3.new(0.388235, 0.372549, 0.384314)
+o10.Position = Vector3.new(229.5, 42.6499977, 141.5)
+o10.Color = Color3.new(0.388235, 0.372549, 0.384314)
+o11.Name = "Center"
+o11.Parent = o1
+o11.BrickColor = BrickColor.new("Navy blue")
+o11.CanCollide = false
+o11.Transparency = 1
+o11.Position = Vector3.new(229.5, 42.6499977, 141.5)
+o11.Size = Vector3.new(1, 2, 1)
+o11.CFrame = CFrame.new(229.5, 42.6499977, 141.5, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+o11.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o11.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o11.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o11.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o11.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o11.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o11.Color = Color3.new(0, 0.12549, 0.376471)
+o11.Position = Vector3.new(229.5, 42.6499977, 141.5)
+o11.Color = Color3.new(0, 0.12549, 0.376471)
+o12.Parent = o11
+o12.C1 = CFrame.new(-0.00596618652, -0.910007477, -0.0178833008, 0, 0, 1, 0, -1, 0, 1, 0, 0)
+o12.Part0 = o11
+o12.Part1 = o4
+o13.Parent = o11
+o13.C1 = CFrame.new(-0.00596618652, -0.417907715, -0.339992523, 0, 0, 1, 1, 0, 0, 0, 1, 0)
+o13.Part0 = o11
+o13.Part1 = o6
+o14.Parent = o11
+o14.C1 = CFrame.new(0, -0.249996185, 0.294036865, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+o14.Part0 = o11
+o14.Part1 = o2
+o15.Parent = o11
+o15.C1 = CFrame.new(-0.00596618652, -0.418121338, -0.339992523, 0, 0, 1, 1, 0, 0, 0, 1, 0)
+o15.Part0 = o11
+o15.Part1 = o8
+o16.Parent = o11
+o16.Part0 = o11
+o16.Part1 = o10
+o17.Parent = o11
+o17.C1 = CFrame.new(0, -0.00402832031, -0.761096954, 1, 0, 0, 0, 0, -1, 0, 1, 0)
+o17.Part0 = o11
+o17.Part1 = o23
+o18.Parent = o11
+o18.C1 = CFrame.new(0, 0.00596618652, 0.209999084, 1, 0, 0, 0, 0, -1, 0, 1, 0)
+o18.Part0 = o11
+o18.Part1 = o25
+o19.Parent = o11
+o19.C1 = CFrame.new(0, -0.249996185, -0.305999756, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+o19.Part0 = o11
+o19.Part1 = o27
+o20.Parent = o11
+o20.C1 = CFrame.new(0.00596618652, -0.399997711, -0.200012207, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+o20.Part0 = o11
+o20.Part1 = o29
+o21.Parent = o11
+o21.C1 = CFrame.new(0, 0.00596618652, 0.509994507, 1, 0, 0, 0, 0, -1, 0, 1, 0)
+o21.Part0 = o11
+o21.Part1 = o31
+o22.Parent = o11
+o22.C1 = CFrame.new(0, -0.00402832031, 0.840309143, 1, 0, 0, 0, 0, -1, 0, 1, 0)
+o22.Part0 = o11
+o22.Part1 = o33
+o23.Parent = o1
+o23.Material = Enum.Material.SmoothPlastic
+o23.BrickColor = BrickColor.new("Dark taupe")
+o23.CanCollide = false
+o23.Position = Vector3.new(229.5, 43.4110947, 141.495972)
+o23.Rotation = Vector3.new(-90, 0, 0)
+o23.Size = Vector3.new(1.01999998, 1.01999998, 0.200000003)
+o23.CFrame = CFrame.new(229.5, 43.4110947, 141.495972, 1, 0, 0, 0, 0, 1, 0, -1, 0)
+o23.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o23.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o23.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o23.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o23.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o23.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o23.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o23.Position = Vector3.new(229.5, 43.4110947, 141.495972)
+o23.Orientation = Vector3.new(-90, 0, 0)
+o23.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o24.Parent = o23
+o24.Scale = Vector3.new(1, 1, 0.200000003)
+o24.Scale = Vector3.new(1, 1, 0.200000003)
+o25.Parent = o1
+o25.Material = Enum.Material.SmoothPlastic
+o25.BrickColor = BrickColor.new("Dark taupe")
+o25.CanCollide = false
+o25.Position = Vector3.new(229.5, 42.4399986, 141.505966)
+o25.Rotation = Vector3.new(-90, 0, 0)
+o25.Size = Vector3.new(1.01999998, 0.600000024, 0.200000003)
+o25.CFrame = CFrame.new(229.5, 42.4399986, 141.505966, 1, 0, 0, 0, 0, 1, 0, -1, 0)
+o25.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o25.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o25.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o25.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o25.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o25.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o25.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o25.Position = Vector3.new(229.5, 42.4399986, 141.505966)
+o25.Orientation = Vector3.new(-90, 0, 0)
+o25.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o26.Parent = o25
+o26.Scale = Vector3.new(1, 1, 0.200000003)
+o26.Scale = Vector3.new(1, 1, 0.200000003)
+o27.Parent = o1
+o27.Material = Enum.Material.SmoothPlastic
+o27.BrickColor = BrickColor.new("Dark taupe")
+o27.CanCollide = false
+o27.Position = Vector3.new(229.5, 42.8999939, 141.806)
+o27.Size = Vector3.new(1.01999998, 1.51999986, 0.200000003)
+o27.CFrame = CFrame.new(229.5, 42.8999939, 141.806, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+o27.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o27.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o27.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o27.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o27.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o27.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o27.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o27.Position = Vector3.new(229.5, 42.8999939, 141.806)
+o27.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o28.Parent = o27
+o28.Scale = Vector3.new(1, 1, 0.200000003)
+o28.Scale = Vector3.new(1, 1, 0.200000003)
+o29.Parent = o1
+o29.Material = Enum.Material.SmoothPlastic
+o29.BrickColor = BrickColor.new("Dark taupe")
+o29.CanCollide = false
+o29.Position = Vector3.new(229.700012, 43.0499954, 141.505966)
+o29.Rotation = Vector3.new(0, 90, 0)
+o29.Size = Vector3.new(0.620000005, 1.21999991, 0.200000003)
+o29.CFrame = CFrame.new(229.700012, 43.0499954, 141.505966, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+o29.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o29.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o29.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o29.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o29.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o29.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o29.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o29.Position = Vector3.new(229.700012, 43.0499954, 141.505966)
+o29.Orientation = Vector3.new(0, 90, 0)
+o29.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o30.Parent = o29
+o30.Scale = Vector3.new(1, 1, 0.200000003)
+o30.Scale = Vector3.new(1, 1, 0.200000003)
+o31.Parent = o1
+o31.Material = Enum.Material.SmoothPlastic
+o31.BrickColor = BrickColor.new("Dark taupe")
+o31.CanCollide = false
+o31.Position = Vector3.new(229.5, 42.1400032, 141.505966)
+o31.Rotation = Vector3.new(-90, 0, 0)
+o31.Size = Vector3.new(1.01999998, 0.600000024, 0.200000003)
+o31.CFrame = CFrame.new(229.5, 42.1400032, 141.505966, 1, 0, 0, 0, 0, 1, 0, -1, 0)
+o31.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o31.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o31.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o31.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o31.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o31.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o31.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o31.Position = Vector3.new(229.5, 42.1400032, 141.505966)
+o31.Orientation = Vector3.new(-90, 0, 0)
+o31.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o32.Parent = o31
+o32.Scale = Vector3.new(1, 1, 0.200000003)
+o32.Scale = Vector3.new(1, 1, 0.200000003)
+o33.Parent = o1
+o33.Material = Enum.Material.SmoothPlastic
+o33.BrickColor = BrickColor.new("Dark taupe")
+o33.CanCollide = false
+o33.Position = Vector3.new(229.5, 41.8096886, 141.495972)
+o33.Rotation = Vector3.new(-90, 0, 0)
+o33.Size = Vector3.new(1.01999998, 1.01999998, 0.200000003)
+o33.CFrame = CFrame.new(229.5, 41.8096886, 141.495972, 1, 0, 0, 0, 0, 1, 0, -1, 0)
+o33.BackSurface = Enum.SurfaceType.SmoothNoOutlines
+o33.BottomSurface = Enum.SurfaceType.SmoothNoOutlines
+o33.FrontSurface = Enum.SurfaceType.SmoothNoOutlines
+o33.LeftSurface = Enum.SurfaceType.SmoothNoOutlines
+o33.RightSurface = Enum.SurfaceType.SmoothNoOutlines
+o33.TopSurface = Enum.SurfaceType.SmoothNoOutlines
+o33.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o33.Position = Vector3.new(229.5, 41.8096886, 141.495972)
+o33.Orientation = Vector3.new(-90, 0, 0)
+o33.Color = Color3.new(0.313726, 0.301961, 0.309804)
+o34.Parent = o33
+o34.Scale = Vector3.new(1, 1, 0.200000003)
+o34.Scale = Vector3.new(1, 1, 0.200000003)
+mas.Parent = workspace
+mas:MakeJoints()
+local mas1 = mas:GetChildren()
+for i=1,#mas1 do
+	mas1[i].Parent = c
+	ypcall(function() mas1[i]:MakeJoints() end)
+end
+mas:Destroy()
+for i=1,#cors do
+coroutine.resume(cors[i])
+end
+
+  RSC0 = CFrame.new(1, 0.5, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+  RSC1 = CFrame.new(-0.5, 0.5, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+  LSC0 = CFrame.new(-1, 0.5, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+  LSC1 = CFrame.new(0.5, 0.5, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+  RHC0 = CFrame.new(1, -1, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+  RHC1 = CFrame.new(0.5, 1, 0, 0, 0, 1, 0, 1, 0, -1, 0, 0)
+  LHC0 = CFrame.new(-1, -1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+  LHC1 = CFrame.new(-0.5, 1, 0, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+  NC0 = CFrame.new(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0)
+  NC1 = CFrame.new(0, -0.5, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0)
+  RJC0 = CFrame.new(0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0)
+  RJC1 = CFrame.new(0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0)
+  RS = c.Torso:FindFirstChild("Right Shoulder")
+  LS = c.Torso:FindFirstChild("Left Shoulder")
+  RH = c.Torso:FindFirstChild("Right Hip")
+  LH = c.Torso:FindFirstChild("Left Hip")
+  RJ = c.HumanoidRootPart:FindFirstChild("RootJoint")
+  N = c.Torso:FindFirstChild("Neck")
+  cf = CFrame.new
+  ang = CFrame.Angles
+  rd = math.rad
+  rd2 = math.random
+
+function swait(num)
+if num==0 or num==nil then
+game:service'RunService'.Heartbeat:wait(0)
+else
+for i=0,num do
+game:service'RunService'.Heartbeat:wait(0)
+end
+end
+end
+	
+  function lerpz(joint, prop, cfrmz, alp)
+    joint[prop] = joint[prop]:lerp(cfrmz, alp)
+  end
+  function resetlerp()
+    RJ.C0 = RJC0
+    RJ.C1 = RJC1
+    N.C0 = NC0
+    N.C1 = NC1
+    RS.C0 = RSC0
+    RS.C1 = RSC1
+    LS.C0 = LSC0
+    LS.C1 = LSC1
+    RH.C0 = RHC0
+    RH.C1 = RHC1
+    LH.C0 = LHC0
+	LH.C1 = LHC1
+  end
+
+function ragplayer(cactus)
+cactus.Humanoid.PlatformStand = true cactus:findFirstChild("Humanoid").Health = 0.01
+if cactus["Right Arm"]~=nil and cactus.Torso:FindFirstChild("Right Shoulder") then
+cactus.Torso:FindFirstChild("Right Shoulder"):Destroy()
+makegloo(cactus.Torso, RSC0, RSC1, cactus.Torso, cactus["Right Arm"], "Right Shoulder")
+maketouchy(cactus["Right Arm"], cactus["Right Arm"], CFrame.new(0, 0.5, 0))
+end
+if cactus["Left Arm"]~=nil and cactus.Torso:FindFirstChild("Left Shoulder") then
+cactus.Torso:FindFirstChild("Left Shoulder"):Destroy()
+makegloo(cactus.Torso, LSC0, LSC1, cactus.Torso, cactus["Left Arm"], "Left Shoulder")
+maketouchy(cactus["Left Arm"], cactus["Left Arm"], CFrame.new(0, 0.5, 0))
+end
+if cactus["Right Leg"]~=nil and cactus.Torso:FindFirstChild("Right Hip") then
+cactus.Torso:FindFirstChild("Right Hip"):Destroy()
+makegloo(cactus.Torso, RHC0, RHC1, cactus.Torso, cactus["Right Leg"], "Right Hip")
+maketouchy(cactus["Right Leg"], cactus["Right Leg"], CFrame.new(0, 0.5, 0))
+end
+if cactus["Left Leg"]~=nil and cactus.Torso:FindFirstChild("Left Hip") then
+cactus.Torso:FindFirstChild("Left Hip"):Destroy()
+makegloo(cactus.Torso, LHC0, LHC1, cactus.Torso, cactus["Left Leg"], "Left Hip")
+maketouchy(cactus["Left Leg"], cactus["Left Leg"], CFrame.new(0, 0.5, 0))
+end
+cactus.Parent = game.Workspace game.Debris:AddItem(cactus,10)
+end
+function makegloo(paren, co, ci, parto, parti, nam) local gloo = Instance.new("Glue") gloo.Name = nam gloo.C0 = co gloo.C1 = ci gloo.Part0 = parto gloo.Part1 = parti gloo.Parent = paren end
+
+function maketouchy(parent, limb, cframe) local pr = Instance.new("Part") pr.Name = "touchy" pr.Size = Vector3.new(1, 1, 1) pr.Transparency = 1 pr.CustomPhysicalProperties = PhysicalProperties.new(0.55, 0.3, 0.5) pr.CanCollide = true pr.Anchored = false pr.Parent = parent local w = Instance.new("Weld") w.Part0 = pr w.Part1 = limb w.C0 = cframe w.Parent = pr end
+
+D = 0
+function Font(i,Parent,Crit)
+D = D+1
+local C = Instance.new("ImageLabel",Parent)C.Size = UDim2.new(0.15,0,0.15,0) C.BackgroundTransparency = 1
+C.Position = UDim2.new(D*0.15,0,0.205,0)
+if Crit == false then
+if i == "0" then C.Image = "rbxassetid://487236444" end
+if i == "1" then C.Image = "rbxassetid://487236465" end
+if i == "2" then C.Image = "rbxassetid://487236476" end
+if i == "3" then C.Image = "rbxassetid://487236496" end
+if i == "4" then C.Image = "rbxassetid://487236518" end
+if i == "5" then C.Image = "rbxassetid://487236545" end
+if i == "6" then C.Image = "rbxassetid://487236578" end
+if i == "7" then C.Image = "rbxassetid://487236610" end
+if i == "8" then C.Image = "rbxassetid://487236633" end
+if i == "9" then C.Image = "rbxassetid://487236653" end
+elseif Crit == true then
+if i == "0" then C.Image = "rbxassetid://487227648" end
+if i == "1" then C.Image = "rbxassetid://487227696" end
+if i == "2" then C.Image = "rbxassetid://487227755" end
+if i == "3" then C.Image = "rbxassetid://487227844" end
+if i == "4" then C.Image = "rbxassetid://487227859" end
+if i == "5" then C.Image = "rbxassetid://487227887" end
+if i == "6" then C.Image = "rbxassetid://487227906" end
+if i == "7" then C.Image = "rbxassetid://487227923" end
+if i == "8" then C.Image = "rbxassetid://487227943" end
+if i == "9" then C.Image = "rbxassetid://487227960" end
+end
+end
+
+function ShowDamage(damage,pos,trl)
+D = 0 local Critical = false
+local crit = trl or false
+if crit == true then Critical = true end
+local P = Instance.new("Part",game.Workspace)P.Transparency = 1 P.Size = Vector3.new(0.2,0.2,0.2) P.CanCollide = false P.CFrame = CFrame.new(pos)
+local bb = Instance.new("BillboardGui",P)bb.Size = UDim2.new(10,0,10,0)
+local s = math.floor(damage*5327)
+for i in string.gmatch(s, "%d") do 
+Font(i,bb,Critical)
+end
+Spawn(function()
+local BV = Instance.new("BodyVelocity",P)BV.maxForce = Vector3.new(math.huge,math.huge,math.huge)
+BV.Velocity = Vector3.new(math.random(-5,5),10,math.random(-5,5))
+wait(0.5)
+for i = 1,10 do
+local G = bb:GetChildren()
+for i = 1,#G do
+if G[i].ClassName == "ImageLabel" then
+G[i].ImageTransparency = G[i].ImageTransparency + 0.1
+end
+end
+wait()
+end
+end)
+end
+
+function Damage(hum,hit,damage,knockback,Type,debounce)
+wait()
+game.Debris:AddItem(script.Parent.Parent,5)
+ShowDamage(damage)
+local b = Instance.new("BoolValue",hit)b.Name = "Debounce" game.Debris:AddItem(b,debounce)
+end
+
+
+Swing = {320557563,320557382,320557487}
+
+local Weld = Instance.new("Weld",o11)Weld.Part0 = o11 Weld.Part1 = c["Right Arm"]
+
+Combo = 0
+mouse.Button1Down:connect(function()
+if attack == true then return end
+local SwingId = Swing[math.random(1,#Swing)]
+attack = true local S = Instance.new("Sound",c.HumanoidRootPart)S.SoundId = "rbxassetid://"..SwingId S.Volume = 0.5
+if Combo == 0 then
+Combo = 1
+for i = 1,18 do
+lerpz(RJ, "C0", RJC0 * cf(0, 1, 0) * ang(rd(-10), rd(0), rd(-65)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(10), rd(0), rd(65)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(25), rd(85)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+local hit = false
+local t = c["Right Arm"].Touched:connect(function(Hit) print(Hit)
+if hit == false then
+if Hit.Parent:findFirstChild("Humanoid")~= nil then hit = true
+local damage = math.random(4,6)
+Hit.Parent.Humanoid:TakeDamage(damage)
+ShowDamage(damage,Hit.Position)
+end
+end
+end)
+for i = 1,3 do
+c.HumanoidRootPart.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0,-0.5)
+lerpz(RJ, "C0", RJC0 * cf(0, -2, 0) * ang(rd(10), rd(0), rd(75)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(-75)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-45), rd(95)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(-25), rd(-85)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+S:Play()
+for i = 1,16 do
+lerpz(RJ, "C0", RJC0 * cf(0, -2, 0) * ang(rd(20), rd(0), rd(120)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(-120)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-80), rd(100)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(-25), rd(-85)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end t:disconnect()
+elseif Combo == 1 then
+Combo = 2
+for i = 1,12 do
+lerpz(RJ, "C0", RJC0 * cf(0, 1, 0) * ang(rd(-10), rd(0), rd(65)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(10), rd(0), rd(-65)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(25), rd(85)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+local hit = false
+local t = c["Left Arm"].Touched:connect(function(Hit) print(Hit)
+if hit == false then
+if Hit.Parent:findFirstChild("Humanoid")~= nil then hit = true
+local damage = math.random(4,6)
+Hit.Parent.Humanoid:TakeDamage(damage)
+ShowDamage(damage,Hit.Position)
+end
+end
+end)
+for i = 1,4 do
+c.HumanoidRootPart.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0,-0.5)
+lerpz(RJ, "C0", RJC0 * cf(0, -2, 0) * ang(rd(10), rd(0), rd(-75)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(75)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(25), rd(85)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-95)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+S:Play()
+for i = 1,8 do
+lerpz(RJ, "C0", RJC0 * cf(0, -2, 0) * ang(rd(10), rd(0), rd(-125)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(125)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(25), rd(85)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-95)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end t:disconnect()
+elseif Combo == 2 then
+Combo = 3
+for i = 1,18 do
+lerpz(RJ, "C0", RJC0 * cf(0, 0.5, 0) * ang(rd(-10), rd(0), rd(-15)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(10), rd(0), rd(15)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 1, 0) * ang(rd(0), rd(25), rd(175)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end S:Play() 
+local hit = false
+local t = o11.Touched:connect(function(Hit)
+if hit == false then hit = true
+local GS = Instance.new("Sound",o11)GS.Volume = 1 GS.SoundId = "rbxassetid://779129548" GS:Play()
+for i = 1,10 do
+local Sizez = math.random(30,60)/10
+local Partz = Instance.new("Part",game.Workspace) Partz.Parent = game.Workspace Partz.Material = Hit.Material Partz.BrickColor = Hit.BrickColor Partz.Size = Vector3.new(Sizez,Sizez,Sizez)
+Partz.CanCollide = false Partz.Anchored = false Partz.CFrame = CFrame.new(o4.Position)*CFrame.Angles(math.random(-90,90),math.random(-90,90),math.random(-90,90))
+local BV = Instance.new("BodyVelocity",Partz)BV.maxForce = Vector3.new(math.huge,math.huge,math.huge)
+BV.velocity = Vector3.new(math.random(-90,90),75,math.random(-90,90))game.Debris:AddItem(BV,0.1)
+end
+local G = game.Workspace:GetChildren()
+for i = 1,#G do
+if G[i]:FindFirstChild("HumanoidRootPart")~= nil and G[i] ~= c then
+if (G[i].Head.Position-o11.Position).magnitude <= 10 then
+local damage = math.random(4,6)
+G[i].Humanoid:TakeDamage(damage)
+ShowDamage(damage,Hit.Position)
+end
+end
+end
+end
+end)
+for i = 1,12 do
+lerpz(RJ, "C0", RJC0 * cf(0, -1.5, -1.5) * ang(rd(25), rd(0), rd(50)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-50)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0.25, -0.5, 0) * ang(rd(0), rd(-15), rd(90)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(1, 1, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(75)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+t:disconnect()
+elseif Combo == 3 then
+Combo = 0
+for i = 1,8 do
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(86)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-86)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-75), rd(90)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(-0.5, 0, -1) * ang(rd(0), rd(-120), rd(-90)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+for i = 1,12 do
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(86)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-86)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-75), rd(90)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(-0.5, 0, -1) * ang(rd(0), rd(-120), rd(-90)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+S.SoundId = "rbxassetid://510436980" S:Play()
+local EfP = Instance.new("Part",game.Workspace)EfP.Shape = "Ball" EfP.Size = Vector3.new(0.2,0.2,0.2) EfP.CanCollide = false
+EfP.Anchored = true EfP.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0.5,-3.5)EfP.Transparency = 1
+local P = Instance.new("Part",game.Workspace)P.Shape = "Ball" P.Size = Vector3.new(3.5,3.5,3.5)P.BrickColor = BrickColor.new("Maroon")P.Material = "Neon" P.CanCollide = false
+P.Anchored = true P.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0.5,-3.5)
+local P2 = Instance.new("Part",game.Workspace) P2.Size = Vector3.new(3.75,3.75,3.75)P2.BrickColor = BrickColor.new("Maroon")P2.Material = "Neon" P2.CanCollide = false
+P2.Anchored = true P2.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0.5,-3.5)*CFrame.Angles(math.random(-90,90),math.random(-90,90),math.random(-90,90)) local M = Instance.new("SpecialMesh",P2)M.MeshId = "rbxassetid://3270017"
+local P3 = Instance.new("Part",game.Workspace) P3.Size = Vector3.new(3.75,3.75,3.75)P3.BrickColor = BrickColor.new("Maroon")P3.Material = "Neon" P3.CanCollide = false
+P3.Anchored = true P3.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0.5,-3.5)*CFrame.Angles(math.random(-90,90),math.random(-90,90),math.random(-90,90)) local M2 = Instance.new("SpecialMesh",P3)M2.MeshId = "rbxassetid://3270017"
+local G = game.Workspace:GetChildren()
+for i = 1,#G do
+if G[i]:FindFirstChild("HumanoidRootPart")~= nil and G[i] ~= c then
+if (G[i].Head.Position-o11.Position).magnitude <= 10 then
+local damage = math.random(8,12)
+G[i].Humanoid:TakeDamage(damage)
+ShowDamage(damage,G[i].Head.Position)
+end
+end
+end
+for i = 1,16 do
+P.Transparency = P.Transparency + 1/16 P.Size = P.Size+Vector3.new(1,1,1)
+M.Scale = M.Scale+Vector3.new(2,2,-0.05) P2.Transparency = P2.Transparency + 1/16
+M2.Scale = M2.Scale+Vector3.new(2,2,-0.05) P3.Transparency = P3.Transparency + 1/16
+P.CFrame = EfP.CFrame P2.CFrame = EfP.CFrame
+c.HumanoidRootPart.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0,0.75)
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(-25), rd(0), rd(86)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-86)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-75), rd(195)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(-0.5, 0, -1) * ang(rd(0), rd(-120), rd(-195)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+end
+attack = false
+end)
+
+function HeadTear()
+attack = true
+local hit = false
+local W = nil
+local Target = nil
+for i = 1,18 do
+lerpz(RJ, "C0", RJC0 * cf(0, 1, 0) * ang(rd(-10), rd(0), rd(-65)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(10), rd(0), rd(65)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(25), rd(85)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+local t = c["Right Arm"].Touched:connect(function(Hit)
+if hit == false then
+if Hit.Parent:findFirstChild("HumanoidRootPart")~= nil and Hit.Parent:findFirstChild("Humanoid").Health >= 5 then
+Hit.Parent.Humanoid.PlatformStand = true hit = true
+Target = Hit.Parent
+W = Instance.new("Weld",Hit.Parent.Head)W.Part0 = Hit.Parent.Head W.Part1 = o11 W.C0 = CFrame.new(0,-1,-0.5)*CFrame.Angles(math.rad(-135),math.rad(180),0)
+swait()
+end
+end
+end)
+for i = 1,6 do
+if hit == true then break end
+c.HumanoidRootPart.CFrame = c.HumanoidRootPart.CFrame*CFrame.new(0,0,-1)
+lerpz(RJ, "C0", RJC0 * cf(0, -2, 0) * ang(rd(10), rd(0), rd(75)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(-75)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-45), rd(95)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(-25), rd(-85)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+for i = 1,16 do
+if hit == true then break end
+lerpz(RJ, "C0", RJC0 * cf(0, -2, 0) * ang(rd(20), rd(0), rd(120)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(-120)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-80), rd(100)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(-25), rd(-85)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+t:disconnect()
+if hit == true then
+c.HumanoidRootPart.Anchored = true
+for i = 1,24 do
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(86)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-86)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-75), rd(135)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+for i = 1,18 do
+lerpz(RJ, "C0", RJC0 * cf(0, 2, 0) * ang(rd(-25), rd(0), rd(-25)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(25), rd(0), rd(15)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 1, 0) * ang(rd(0), rd(25), rd(175)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+for i = 1,6 do
+lerpz(RJ, "C0", RJC0 * cf(0, -1.5, -2) * ang(rd(35), rd(0), rd(76)), 0.5)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-76)), 0.5) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0.25, -0.5, 0) * ang(rd(0), rd(-75), rd(180)), 0.5) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(75), rd(-85)), 0.5) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(1, 1, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(75)), 0.5)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.5)
+swait()
+end
+local GS = Instance.new("Sound",o11)GS.Volume = 1 GS.SoundId = "rbxassetid://779129548" GS:Play()
+local HeadRip = false
+local damage = 9234262
+if Target.Humanoid.Health <= damage then
+W:remove() HeadRip = true
+end
+swait()
+ShowDamage(damage,o6.Position, true)
+Target.Humanoid:TakeDamage(damage)
+Target:BreakJoints()
+swait()
+wait(0.25)
+for i = 1,24 do
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(-15), rd(0), rd(86)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(-86)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(-75), rd(135)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+W:remove()
+c.HumanoidRootPart.Anchored = false
+Target.Humanoid.PlatformStand = false
+end
+attack = false
+end
+
+mouse.KeyDown:connect(function(key)
+if attack == true then return end
+if key == "z" then
+HeadTear()
+end
+end)
+
+sine = 0
+game:GetService("RunService").RenderStepped:connect(function()
+if attack == false then
+if c.HumanoidRootPart.Velocity.Y > 1 then sine = sine + 1
+
+elseif (c.HumanoidRootPart.Velocity * Vector3.new(1, 0, 1)).magnitude > 2 then
+sine = sine + 1
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(5), rd(0), rd(0)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(math.cos(sine/6)*-24)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(math.cos(sine/6)*-24)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(math.cos(sine/6)*24)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(math.cos(sine/6)*24)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+else sine = sine + 1
+lerpz(RJ, "C0", RJC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)-- Y, X, Z
+lerpz(N, "C0", NC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Y, X, Z
+lerpz(RS, "C0", RSC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y 
+lerpz(RS, "C1", RSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C0", LSC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(LS, "C1", LSC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25) -- Z, X, Y
+lerpz(RH, "C0", RHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(RH, "C1", RHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C0", LHC0 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+lerpz(LH, "C1", LHC1 * cf(0, 0, 0) * ang(rd(0), rd(0), rd(0)), 0.25)
+swait()
+end
+end
+end)
+
+
+
+
+
+
+
+
+
+
+
+
+
