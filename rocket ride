@@ -1,0 +1,653 @@
+
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "Melon's (FE) Scripts";
+	Text = "Loading, enjoy!";
+	Icon = "rbxthumb://type=Asset&id=7969699183&w=150&h=150"})
+Duration = 16;
+HumanDied = false
+local CountSCIFIMOVIELOL = 1
+function SCIFIMOVIELOL(Part0,Part1,Position,Angle)
+	local AlignPos = Instance.new('AlignPosition', Part1); AlignPos.Name = "AliP_"..CountSCIFIMOVIELOL
+	AlignPos.ApplyAtCenterOfMass = true;
+	AlignPos.MaxForce = 5772000--67752;
+	AlignPos.MaxVelocity = math.huge/9e110;
+	AlignPos.ReactionForceEnabled = false;
+	AlignPos.Responsiveness = 200;
+	AlignPos.RigidityEnabled = false;
+	local AlignOri = Instance.new('AlignOrientation', Part1); AlignOri.Name = "AliO_"..CountSCIFIMOVIELOL
+	AlignOri.MaxAngularVelocity = math.huge/9e110;
+	AlignOri.MaxTorque = 5772000
+	AlignOri.PrimaryAxisOnly = false;
+	AlignOri.ReactionTorqueEnabled = false;
+	AlignOri.Responsiveness = 200;
+	AlignOri.RigidityEnabled = false;
+	local AttachmentA=Instance.new('Attachment',Part1); AttachmentA.Name = "Ath_"..CountSCIFIMOVIELOL
+	local AttachmentB=Instance.new('Attachment',Part0); AttachmentB.Name = "Ath_"..CountSCIFIMOVIELOL
+	AttachmentA.Orientation = Angle or Vector3.new(0,0,0)
+	AttachmentA.Position = Position or Vector3.new(0,0,0)
+	AlignPos.Attachment1 = AttachmentA;
+	AlignPos.Attachment0 = AttachmentB;
+	AlignOri.Attachment1 = AttachmentA;
+	AlignOri.Attachment0 = AttachmentB;
+	CountSCIFIMOVIELOL = CountSCIFIMOVIELOL + 1
+	return {AlignPos,AlignOri,AttachmentA,AttachmentB}
+end
+
+if _G.netted ~= true then
+	_G.netted = true
+	coroutine.wrap(function()
+		settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
+		settings().Physics.AllowSleep = false
+		game:GetService("RunService").RenderStepped:Connect(function()
+			game:FindFirstChildOfClass("Players").LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)
+			sethiddenproperty(game:FindFirstChildOfClass("Players").LocalPlayer,"SimulationRadius",math.huge*math.huge)
+		end)
+	end)()
+end
+
+game:FindFirstChildOfClass("Players").LocalPlayer["Character"].Archivable = true
+local hatnameclone = {}
+for _,v in next, game:FindFirstChildOfClass("Players").LocalPlayer["Character"]:GetChildren() do
+	if v:IsA("Accessory") then
+		if hatnameclone[v.Name] then
+			if hatnameclone[v.Name] == "s" then
+				hatnameclone[v.Name] = {}
+			end
+			table.insert(hatnameclone[v.Name],v)
+		else
+			hatnameclone[v.Name] = "s"
+		end
+	end
+end
+for _,v in pairs(hatnameclone) do
+	if type(v) == "table" then
+		local num = 1
+		for _,w in pairs(v) do
+			w.Name = w.Name..num
+			num = num + 1
+		end
+	end
+end
+hatnameclone = nil
+
+local DeadChar = game:FindFirstChildOfClass("Players").LocalPlayer.Character
+
+local fldr = Instance.new("Folder",game:FindFirstChildOfClass("Players").LocalPlayer["Character"])
+fldr.Name = "DMYF"
+local CloneChar = DeadChar:Clone()
+local ANIMATIONHERE
+if CloneChar:FindFirstChild("Animate") then
+	ANIMATIONHERE = CloneChar:FindFirstChild("Animate"):Clone()
+	CloneChar:FindFirstChild("Animate"):Destroy()
+end
+if CloneChar:FindFirstChildOfClass("Folder") then CloneChar:FindFirstChildOfClass("Folder"):Destroy() end
+if CloneChar.Torso:FindFirstChild("Neck") then
+	local Clonessss = CloneChar.Torso:FindFirstChild("Neck"):Clone()
+	Clonessss.Part0 = nil
+	Clonessss.Part1 = DeadChar.Head
+	Clonessss.Parent = DeadChar.Torso
+end
+CloneChar.Parent = fldr
+CloneChar.HumanoidRootPart.CFrame = DeadChar.HumanoidRootPart.CFrame
+CloneChar.Humanoid.BreakJointsOnDeath = false
+CloneChar.Name = "non"
+CloneChar.Humanoid.DisplayDistanceType = "None"
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		local topacc = false
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+		v.Handle.Massless = true
+		v.Handle.CanCollide = false
+		if v.Handle:FindFirstChildOfClass("Attachment") then
+			local ath__ = v.Handle:FindFirstChildOfClass("Attachment")
+			if ath__.Name == "HatAttachment" or ath__.Name == "HairAttachment" or ath__.Name == "FaceFrontAttachment" or ath__.Name == "FaceCenterAttachment" then
+				topacc = ath__.Name
+			end
+		end
+        local bv = Instance.new("BodyVelocity",v.Handle)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			if topacc then
+				local allthings = SCIFIMOVIELOL(v.Handle,DeadChar.Torso,Vector3.new(0,1.5,0)+ (DeadChar.Head[topacc].Position + (v.Handle[topacc].Position*-1)),Vector3.new(0,0,0))
+				local normaltop = allthings[1].Attachment1
+				local alipos = allthings[1]
+				local alirot = allthings[2]
+				local p0 = v.Handle
+				local p1 = DeadChar.Head
+				alipos.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				alirot.Parent = CloneChar:FindFirstChild(v.Name).Handle
+				while true do
+					game:GetService("RunService").RenderStepped:wait()
+					if HumanDied then break end
+					coroutine.wrap(function()
+						if alipos.Attachment1 == normaltop then
+							p0.CFrame = p0.CFrame:lerp((((DeadChar.Torso.CFrame * CFrame.new(0,1.5,0)) * p1[topacc].CFrame) * p0[topacc].CFrame:inverse()),1)
+						else
+							v.Handle.CFrame = v.Handle.CFrame:lerp(alipos.Attachment1.Parent.CFrame * CFrame.new(alipos.Attachment1.Position) * CFrame.Angles(math.rad(alipos.Attachment1.Rotation.X),math.rad(alipos.Attachment1.Rotation.Y),math.rad(alipos.Attachment1.Rotation.Z)),1)
+						end
+					end)()
+				end
+			else
+				SCIFIMOVIELOL(v.Handle,CloneChar[v.Name].Handle,Vector3.new(0,0,0),Vector3.new(0,0,0))
+			end
+		end)()
+    end
+end
+
+local a = DeadChar.Torso
+local b = DeadChar.HumanoidRootPart
+local c = DeadChar.Humanoid
+a.Parent = game:FindFirstChildOfClass("Workspace")
+c.Parent = game:FindFirstChildOfClass("Workspace")
+local told = a:Clone()
+local told1 = c:Clone()
+b["RootJoint"].Part0 = told
+b["RootJoint"].Part1 = DeadChar.Head
+a.Name = "torso"
+a.Neck:Destroy()
+c.Name = "Cloned Avatar"
+told.Parent = DeadChar
+told1.Parent = DeadChar
+DeadChar.PrimaryPart = told
+told1.Health = 0
+b:Destroy()
+a.Parent = DeadChar
+c.Parent = DeadChar
+told:Destroy()
+told1:Destroy()
+a.Name = "Torso"
+
+if CloneChar.Head:FindFirstChildOfClass("Decal") then CloneChar.Head:FindFirstChildOfClass("Decal").Transparency = 1 end
+if DeadChar:FindFirstChild("Animate") then DeadChar:FindFirstChild("Animate"):Destroy() end
+
+local Collider
+function UnCollide()
+    if HumanDied then Collider:Disconnect(); return end
+    --[[for _,Parts in next, CloneChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+            Parts.CanCollide = false 
+        end 
+    end]]
+    for _,Parts in next, DeadChar:GetChildren() do
+        if Parts:IsA("BasePart") then
+        Parts.CanCollide = false
+        end 
+    end 
+end
+Collider = game:GetService("RunService").Stepped:Connect(UnCollide)
+
+local resetBindable = Instance.new("BindableEvent")
+resetBindable.Event:connect(function()
+    game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+	resetBindable:Destroy()
+	HumanDied = true
+    pcall(function()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+		DeadChar.Head:Destroy()
+		DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+		game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+		if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+	end)
+end)
+game:GetService("StarterGui"):SetCore("ResetButtonCallback", resetBindable)
+
+coroutine.wrap(function()
+    while true do
+        game:GetService("RunService").RenderStepped:wait()
+        if not CloneChar or not CloneChar:FindFirstChild("Head") or not CloneChar:FindFirstChildOfClass("Humanoid") or CloneChar:FindFirstChildOfClass("Humanoid").Health <= 0 and not DeadChar or not DeadChar:FindFirstChild("Head") or not DeadChar:FindFirstChildOfClass("Humanoid") or DeadChar:FindFirstChildOfClass("Humanoid").Health <= 0 then 
+            HumanDied = true
+            pcall(function()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = DeadChar
+				DeadChar.Head:Destroy()
+				DeadChar:FindFirstChildOfClass("Humanoid"):Destroy()
+				game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+				if DeadChar:FindFirstChildOfClass("Folder") then DeadChar:FindFirstChildOfClass("Folder"):Destroy() end
+			end)
+            if resetBindable then
+                game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+                resetBindable:Destroy()
+            end
+            break
+        end		
+    end
+end)()
+
+
+SCIFIMOVIELOL(DeadChar["Head"],CloneChar["Head"])
+SCIFIMOVIELOL(DeadChar["Torso"],CloneChar["Torso"])
+SCIFIMOVIELOL(DeadChar["Left Arm"],CloneChar["Left Arm"])
+SCIFIMOVIELOL(DeadChar["Right Arm"],CloneChar["Right Arm"])
+SCIFIMOVIELOL(DeadChar["Left Leg"],CloneChar["Left Leg"])
+SCIFIMOVIELOL(DeadChar["Right Leg"],CloneChar["Right Leg"])
+
+for _,v in pairs(DeadChar:GetChildren()) do
+	if v:IsA("BasePart") and v.Name ~= "Head" then
+		--[[local bv = Instance.new("BodyVelocity",v)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = CloneChar[v.Name].CFrame
+			end
+		end)()]]
+	elseif v:IsA("BasePart") and v.Name == "Head" then
+		local bv = Instance.new("BodyVelocity",v)
+		bv.Velocity = Vector3.new(0,0,0)
+		coroutine.wrap(function()
+			while true do
+				game:GetService("RunService").RenderStepped:wait()
+				if HumanDied then break end
+				v.CFrame = DeadChar.Torso.CFrame * CFrame.new(0,1.5,0)
+			end
+		end)()
+	end
+end
+
+for _,BodyParts in next, CloneChar:GetDescendants() do
+if BodyParts:IsA("BasePart") or BodyParts:IsA("Part") then
+BodyParts.Transparency = 1 end end
+game:GetService("RunService").RenderStepped:wait()
+game:FindFirstChildOfClass("Players").LocalPlayer.Character = CloneChar
+game:FindFirstChildOfClass("Workspace"):FindFirstChildOfClass("Camera").CameraSubject = CloneChar.Humanoid
+
+for _,v in next, DeadChar:GetChildren() do
+	if v:IsA("Accessory") then
+		if v.Handle:FindFirstChildOfClass("Weld") then v.Handle:FindFirstChildOfClass("Weld"):Destroy() end
+	end
+end
+
+if ANIMATIONHERE then ANIMATIONHERE.Parent = CloneChar end
+
+
+-- Rideket
+-- @Acecateer
+
+-- Acecateer Rideket
+
+wait(0.5)
+
+--[[ Missile properties ]]--
+local currentSpeed                        = 0
+local ejectedSpeed                        = 0
+local maxSpeed                                = 350
+local increaseTime                        = 0.3
+local increaseIncrement                = 10
+local decreaseTime                        = 0.2
+local decreaseIncrement                = 15
+local collisionSpeed                = 100
+local doPrints                                = false
+local Color                                        = false
+local speedGauge                        = true
+
+local Player                                = game.Players.LocalPlayer
+local Mouse                                        = Player:GetMouse()
+Mouse.TargetFilter                        = workspace
+local mousePos
+repeat wait() until Player.Character:IsDescendantOf(workspace)
+local Character                                = Player.Character
+repeat wait() until Character:FindFirstChild("Humanoid")
+local Humanoid                                = Character.Humanoid
+Humanoid:WaitForChild("Animator"):Destroy()
+
+-- Services
+local InputService                        = game:GetService("UserInputService")
+local RunService                        = game:GetService("RunService")
+
+-- Set up character variables
+local bodyParts                                = {}
+local Joints                                = {}
+
+local scanCharacter        = function()
+        Scan = function(Target)
+                for _, child in pairs(Target:GetChildren()) do
+                        if child:IsA("Part") then
+                                bodyParts[child.Name]         = child
+                                if #child:GetChildren() > 0 then
+                                        Scan(child)
+                                end
+                        elseif child:IsA("Motor6D") then
+                                Joints[child.Name]                = child
+                        end
+                end
+        end
+        Scan(Character)
+end
+scanCharacter()
+
+local fromRootC0, fromRootC1 = Joints["RootJoint"].C0, Joints["RootJoint"].C1
+local fromNeck                        = Joints["Neck"].C1
+local fromLeftShoulder        = Joints["Left Shoulder"].C1
+local fromRightShoulder        = Joints["Right Shoulder"].C1
+local fromLeftHip                = Joints["Left Hip"].C1
+local fromRightHip                = Joints["Right Hip"].C1
+
+local Seat                                = Instance.new("Seat", Character)
+Seat.Transparency                = 1
+Seat.CanCollide                        = false
+Seat.FormFactor                        = Enum.FormFactor.Custom
+Seat.Size                                = Vector3.new(1, 0.5, 1)
+local seatWeld                        = Instance.new("Weld", Seat)
+seatWeld.Part0                        = Seat
+seatWeld.Part1                        = bodyParts["Torso"]
+seatWeld.C1                                = CFrame.new(0, -0.8, 0) * CFrame.Angles(math.pi/2, 0, 0)
+
+local lastSeatChar
+local preLeftJoint, preRightJoint
+Seat.Changed:connect(function(Property)
+        if Property == "Occupant" and Seat.Occupant then
+                lastSeatChar        = Seat.Occupant.Parent
+                local Torso                = lastSeatChar:FindFirstChild("Torso")
+                if Torso then
+                        local LeftJoint                = Torso["Left Hip"]
+                        local RightJoint        = Torso["Right Hip"]
+                        preLeftJoint        = LeftJoint.C1
+                        preRightJoint        = RightJoint.C1
+                        LeftJoint.C1                = LeftJoint.C1 * CFrame.Angles(math.rad(25), 0, 0)
+                        RightJoint.C1                = RightJoint.C1 * CFrame.Angles(math.rad(25), 0, 0)
+                end
+        elseif not Seat.Occupant and lastSeatChar then
+                local Torso                = lastSeatChar:FindFirstChild("Torso")
+                if Torso then
+                        local LeftJoint                = Torso["Left Hip"]
+                        local RightJoint        = Torso["Right Hip"]
+                        LeftJoint.C1                = preLeftJoint
+                        RightJoint.C1                = preRightJoint
+                end
+        end
+end)
+
+createMissile = function()
+        local Ejected                                = false
+        
+        Humanoid.Jump                                = true; wait(0.3)
+        
+        local Missile                                = Instance.new("Part", Character)
+        Missile.Name                                = "Missile"
+        if Color then Missile.BrickColor = Color end
+        Missile.FormFactor                        = Enum.FormFactor.Custom
+        Missile.Size                                = Vector3.new(1.56, 1.37, 5.65)
+        
+        local Mesh                                        = Instance.new("SpecialMesh", Missile)
+        Mesh.MeshId                                        = "http://www.roblox.com/asset/?id=103970395"
+        if not Color then Mesh.TextureId = "http://www.roblox.com/asset/?id=103967643" end
+        Mesh.Scale                                        = Vector3.new(4, 4, 4)
+        
+        local EmitterPart                        = Instance.new("Part", Character)
+        EmitterPart.Name                        = "SmokeEmitter"
+        EmitterPart.CanCollide                = false
+        EmitterPart.Transparency        = 1
+        EmitterPart.FormFactor                = Enum.FormFactor.Custom
+        EmitterPart.Size                        = Vector3.new(0.2, 0.2, 0.2)
+        
+        local EmitterWeld                        = Instance.new("Weld", Missile)
+        EmitterWeld.Part0                        = Missile
+        EmitterWeld.Part1                        = EmitterPart
+        EmitterWeld.C0                                = CFrame.Angles(math.pi/2, 0, 0)
+        EmitterWeld.C1                                = CFrame.new(0, -Missile.Size.Z/2, 0)
+        
+        local Smoke                                        = Instance.new("ParticleEmitter", EmitterPart)
+        Smoke.Enabled                                = false
+        Smoke.Size                                        = NumberSequence.new(0.8)
+        Smoke.Texture                                = "rbxassetid://243661573"
+        Smoke.Lifetime                                = NumberRange.new(0.5, 1)
+        Smoke.Rate                                        = 25
+        Smoke.Rotation                                = NumberRange.new(-15, 15)
+        Smoke.RotSpeed                                = NumberRange.new(50)
+        Smoke.Speed                                        = NumberRange.new(5, 10)
+        Smoke.VelocitySpread                = 30
+        
+        Joints["RootJoint"].C0                = fromRootC0 * CFrame.Angles(math.pi/2, 0, 0)
+        Joints["RootJoint"].C1                = fromRootC1 * CFrame.new(0, 3, 0)
+        local Weld                                        = Instance.new("Weld", bodyParts["Torso"])
+        Weld.Part0                                        = bodyParts["Torso"]
+        Weld.Part1                                        = Missile
+        Weld.C0                                                = CFrame.new(0, 0, -1)
+        Weld.C1                                                = CFrame.Angles(-math.pi/2, 0, 0)
+        
+        -- Set up posture!
+        local currentLeftShoulder, currentRightShoulder         = Joints["Left Shoulder"].C1, Joints["Right Shoulder"].C1
+        local currentLeftHip, currentRightHip                                = Joints["Left Hip"].C1, Joints["Right Hip"].C1
+        local currentNeck                        = Joints["Neck"].C1
+        local toNeck                                = fromNeck * CFrame.new(0, 0.25, 0) * CFrame.Angles(math.rad(80), 0, 0)
+        local toLeftShoulder                = fromLeftShoulder * CFrame.new(-0.3, 0, 0.5) * CFrame.Angles(math.pi/2, math.rad(120), 0)
+        local toRightShoulder                = fromRightShoulder * CFrame.new(0.3, 0, 0.5) * CFrame.Angles(math.pi/2, -math.rad(120), 0)
+        local toLeftHip                                = fromLeftHip * CFrame.new(0.5, -0.5, 0) * CFrame.Angles(math.rad(30), math.rad(40), math.rad(20))
+        local toRightHip                        = fromRightHip * CFrame.new(-0.5, -0.5, 0) * CFrame.Angles(math.rad(30), -math.rad(40), -math.rad(20))
+        spawn(function()
+                for i = 0, 1, 0.1 do
+                        Joints["Neck"].C1                        = currentNeck:lerp(toNeck, i)
+                        Joints["Left Shoulder"].C1         = currentLeftShoulder:lerp(toLeftShoulder, i)
+                        Joints["Right Shoulder"].C1        = currentRightShoulder:lerp(toRightShoulder, i)
+                        Joints["Left Hip"].C1                = currentLeftHip:lerp(toLeftHip, i)
+                        Joints["Right Hip"].C1                = currentRightHip:lerp(toRightHip, i)
+                        RunService.RenderStepped:wait()
+                end
+        end)
+        
+        local EjectAnimation = function()
+                local currentLeftShoulder, currentRightShoulder         = Joints["Left Shoulder"].C1, Joints["Right Shoulder"].C1
+                local currentLeftHip, currentRightHip                                = Joints["Left Hip"].C1, Joints["Right Hip"].C1
+                local currentRootC0, currentRootC1                                        = Joints["RootJoint"].C0, Joints["RootJoint"].C1
+                local currentNeck                = Joints["Neck"].C1
+                local toRootC0, toRootC1                                                        = fromRootC0, fromRootC1
+                local toLeftShoulder        = fromLeftShoulder * CFrame.new(0, 0.5, 0.5) * CFrame.Angles(math.rad(120), math.rad(30), 0)
+                local toRightShoulder        = fromRightShoulder * CFrame.new(0, 0.5, 0.5) * CFrame.Angles(math.rad(120), -math.rad(30), 0)
+                local toLeftHip                        = fromLeftHip * CFrame.new(0, -0.3, -0.1) * CFrame.Angles(math.rad(20), 0, 0)
+                local toRightHip                = fromRightHip * CFrame.new(0, -0.3, -0.1) * CFrame.Angles(math.rad(20), 0, 0)
+                for i = 0, 1, 0.1 do
+                        Joints["Neck"].C1                                = currentNeck:lerp(fromNeck, i)
+                        Joints["RootJoint"].C0                        = currentRootC0:lerp(toRootC0, i)
+                        Joints["RootJoint"].C1                        = currentRootC1:lerp(toRootC1, i)
+                        Joints["Left Shoulder"].C1                 = currentLeftShoulder:lerp(toLeftShoulder, i)
+                        Joints["Right Shoulder"].C1                = currentRightShoulder:lerp(toRightShoulder, i)
+                        Joints["Left Hip"].C1                        = currentLeftHip:lerp(toLeftHip, i)
+                        Joints["Right Hip"].C1                        = currentRightHip:lerp(toRightHip, i)
+                        RunService.RenderStepped:wait()
+                end
+        end
+        
+        -- Set up HUD
+        local HUD                                        = Instance.new("ScreenGui", Player.PlayerGui)
+        HUD.Name                                        = "HUD"
+        local ActivateFrame                        = Instance.new("Frame", HUD)
+        ActivateFrame.Name                        = "ActivateFrame"
+        ActivateFrame.Position                = UDim2.new(1, -150, 1, -50)
+        ActivateFrame.Size                        = UDim2.new(0, 150, 0, 50)
+        ActivateFrame.Style                        = "RobloxRound"
+        local Button                                = Instance.new("TextButton", ActivateFrame)
+        Button.Name                                        = "Button"
+        Button.Position                                = UDim2.new(0, -8, 0, -8)
+        Button.Size                                        = UDim2.new(1, 16, 1, 16)
+        Button.Style                                = "RobloxRoundDropdownButton"
+        Button.Text                                        = ""
+        local buttonText                        = Instance.new("TextLabel", Button)
+        buttonText.ZIndex                        = 2
+        buttonText.Name                                = "Text"
+        buttonText.BackgroundTransparency = 1
+        buttonText.Position                        = UDim2.new(0, -5, 0, -5)
+        buttonText.Size                                = UDim2.new(1, 10, 1, 10)
+        buttonText.Font                                = Enum.Font.SourceSansBold
+        buttonText.TextScaled                = true
+        buttonText.Text                                = "Activate"
+        buttonText.TextColor3                = Color3.new()
+        buttonText.TextTransparency = 0.2
+        local Shadow                                = buttonText:Clone()
+        Shadow.Parent                                = Button
+        Shadow.Name                                        = "Shadow"
+        Shadow.Position                                = UDim2.new(0, -3, 0, -3)
+        Shadow.ZIndex                                = 1
+        Shadow.TextColor3                        = Color3.new(116/255, 116/255, 116/255)
+        
+        if speedGauge then
+                local speedFrame                 = ActivateFrame:Clone()
+                speedFrame.Position                = UDim2.new(1, -305, 1, -50)
+                local speedButton                = speedFrame:WaitForChild("Button")
+                speedButton.Active                = false
+                speedButton.AutoButtonColor = false
+                speedButtonText                        = speedButton:WaitForChild("Text")
+                speedButtonText.Text        = "0 Studs/s"
+                speedShadow                                = speedButton:WaitForChild("Shadow")
+                speedShadow.Text                = "0 Studs/s"
+                speedFrame.Parent                = HUD
+        end
+        
+        local Activated                                = true
+        Button.Style                                = "RobloxRoundButton"
+        buttonText.Text                                = "Un-Activate"
+        Shadow.Text                                        = "Un-Activate"
+        
+        Button.MouseButton1Click:connect(function()
+                if not Activated then
+                        Activated                        = true
+                        Button.Style                = "RobloxRoundButton"
+                        buttonText.Text                = "Un-Activate"
+                        Shadow.Text                        = "Un-Activate"
+                else
+                        Activated                        = false
+                        Button.Style                = "RobloxRoundDropdownButton"
+                        buttonText.Text                = "Activate"
+                        Shadow.Text                        = "Activate"
+                end
+        end)
+        
+        -- Fly away stanley, be free!
+        local bodyGyro                                = Instance.new("BodyGyro", Missile)
+        bodyGyro.maxTorque                        = Vector3.new(400000, 400000, 400000)
+        bodyGyro.P                                        = 6000
+        bodyGyro.cframe                                = Missile.CFrame
+        
+        local bodyPos                                = Instance.new("BodyPosition", Missile)
+        bodyPos.maxForce                        = Vector3.new(100000, 100000, 100000)
+        bodyPos.P                                        = 1000
+        bodyPos.position                        = bodyParts["Torso"].Position
+        
+        local Sound                                        = Instance.new("Sound", Missile)
+        Sound.SoundId                                = "rbxassetid://169572883"
+        Sound.Looped                                = true
+        
+        local lastTick                                = tick()
+        local Connection1 = InputService.InputBegan:connect(function(Input)
+                if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+                        Sound:Play(); Smoke.Enabled = true
+                        RunService:UnbindFromRenderStep("Stopping")
+                        RunService:BindToRenderStep("Flying", 1, function()
+                                local currentTick        = tick()
+                                if currentTick - lastTick >= increaseTime and currentSpeed < maxSpeed then
+                                        currentSpeed         = currentSpeed + increaseIncrement
+                                        if currentSpeed > maxSpeed then currentSpeed = maxSpeed end
+                                        if doPrints then print("Increased speed!", "Current speed: "..currentSpeed) end
+                                        if speedGauge then
+                                                speedButtonText.Text         = currentSpeed .. " Studs/s"
+                                                speedShadow.Text                = currentSpeed .. " Studs/s"
+                                        end
+                                        lastTick                = currentTick
+                                end
+                                mousePos                        = Mouse.Hit.p
+                                bodyGyro.cframe                = CFrame.new(Missile.Position, mousePos)
+                                bodyPos.position        = Missile.Position + (mousePos - Missile.Position).unit * currentSpeed
+                        end)
+                end
+        end)
+        
+        local Connection2 = InputService.InputEnded:connect(function(Input)
+                if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+                        Sound:Stop(); Smoke.Enabled = false
+                        RunService:UnbindFromRenderStep("Flying")
+                        RunService:BindToRenderStep("Stopping", 1, function()
+                                local currentTick        = tick()
+                                if currentTick - lastTick >= decreaseTime and currentSpeed > 0 then
+                                        currentSpeed         = currentSpeed - decreaseIncrement
+                                        if currentSpeed < 0 then currentSpeed = 0 end
+                                        if doPrints then print("Decreased speed!", "Current speed: "..currentSpeed) end
+                                        if speedGauge then
+                                                speedButtonText.Text         = currentSpeed .. " Studs/s"
+                                                speedShadow.Text                = currentSpeed .. " Studs/s"
+                                        end
+                                        lastTick                = currentTick
+                                end
+                                mousePos                        = Mouse.Hit.p
+                                bodyGyro.cframe                = CFrame.new(Missile.Position, mousePos)
+                                bodyPos.position        = Missile.Position + (mousePos - Missile.Position).unit * currentSpeed
+                        end)
+                end
+        end)
+        
+        local killConnections = function(Destroy)
+                RunService:UnbindFromRenderStep("Flying")
+                RunService:UnbindFromRenderStep("Stopping")
+                if Connection1 and Connection2 then Connection1:disconnect(); Connection2:disconnect() end
+                if Destroy then Missile:Destroy(); EmitterPart:Destroy() end
+        end
+        
+        local Explode = function(Missile, isEjected)
+                local Explosion                = Instance.new("Explosion")
+                Explosion.BlastRadius = 50
+                Explosion.DestroyJointRadiusPercent = 20
+                Explosion.Position        = Missile.Position
+                Explosion.Parent        = workspace
+                
+                local boomPart                = Instance.new("Part", workspace)
+                boomPart.Name                = "Boom"
+                boomPart.Transparency = 1
+                boomPart.Anchored        = true
+                boomPart.CanCollide        = false
+                boomPart.FormFactor        = Enum.FormFactor.Custom
+                boomPart.Size                = Vector3.new(0.2, 0.2, 0.2)
+                boomPart.Position        = Missile.Position
+                local Boom                        = Instance.new("Sound", boomPart)
+                Boom.SoundId                = "rbxassetid://157878578"
+                Boom:Play()
+                game:GetService("Debris"):AddItem(boomPart, 1)
+                
+                if isEjected then
+                        Missile:Destroy(); EmitterPart:Destroy()
+                else
+                        killConnections(true)
+                end
+        end
+        
+        local MissileCon = Missile.Touched:connect(function(Hit)
+                if Activated and not Hit:IsDescendantOf(Character) and Hit.CanCollide and (currentSpeed >= collisionSpeed or (Ejected and ejectedSpeed >= collisionSpeed)) then
+                        Explode(Missile)
+                end
+        end)
+        
+        if Humanoid.Health <= 0 then killConnections(true) end
+        Humanoid.Died:connect(function() killConnections(true) end)
+        
+        local Connection3
+        Connection3 = InputService.InputBegan:connect(function(Input)
+                if Input.KeyCode == Enum.KeyCode.E and currentSpeed >= 100 then
+                        Connection3:disconnect()
+                        killConnections()
+                        MissileCon:disconnect()
+                        Ejected                                        = true
+                        
+                        local ejectedMissile        = Missile
+                        ejectedMissile.Touched:connect(function(Hit)
+                                if not Hit:IsDescendantOf(Character) and Hit.CanCollide then
+                                        Explode(ejectedMissile, true)
+                                end
+                        end)
+                        
+                        local ejectedBodyPos        = bodyPos
+                        ejectedSpeed                        = currentSpeed
+                        currentSpeed                        = 0
+                        local toPos                                = mousePos
+                        Weld:Destroy()
+                        HUD:Destroy()
+                        game:GetService("Debris"):AddItem(ejectedMissile, 5); game:GetService("Debris"):AddItem(EmitterPart, 5)
+                        local Ejected = RunService.RenderStepped:connect(function()
+                                ejectedBodyPos.position        = ejectedMissile.Position + (toPos - ejectedMissile.Position).unit * ejectedSpeed
+                        end)
+                        wait(0.1)
+                        bodyParts["Torso"].Velocity = Vector3.new(0, 100, 0)
+                        EjectAnimation()
+                        wait(0.5)
+                        createMissile()
+                end
+        end)
+end
+createMissile()
